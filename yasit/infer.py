@@ -66,7 +66,7 @@ class State:
         return not (beats_best and beats_random)
 
 
-def infer(demos, basis, n_sat, rand_sat_oracle):
+def infer(demos, basis, rand_sat_oracle):
     state = State(rand_sat_oracle, len(demos))
     visited = {smallest(contain_trc(trc)) for trc in demos}
     for nsat in range(len(demos)):
