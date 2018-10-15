@@ -60,7 +60,10 @@ class State:
             self.lower_bound, self.next_lower_bound = self.next_lower_bound, 1
 
     def prune(self):
-        return False
+        avg_sat_rate = nsat / self.ndemos
+        beats_random = self.lower_bound < avg_sat_rate
+        beats_best = score(avg_sat_rate, self.lower_bound) > self.best_score
+        return not (beats_best and beats_random)
 
 
 def infer(demos, basis, n_sat, rand_sat_oracle):
