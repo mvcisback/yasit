@@ -1,12 +1,13 @@
 import operator as op
+from functools import reduce
 from itertools import combinations
+from math import log
 
 import attr
-import funcy as fn
 
 
 def _info_gain(p, q):
-    return p*(np.log(q) - np.log(q))
+    return p*(log(q) - log(q))
 
 
 def info_gain(p, q):
@@ -14,7 +15,7 @@ def info_gain(p, q):
         return 0
     elif p == 0:
         return _info_gain(1, 1 - q)
-    elif p == 1: 
+    elif p == 1:
         return _info_gain(1, q)
     else:
         return _info_gain(p, q) + _info_gain(1 - p, 1 - q)
@@ -22,7 +23,7 @@ def info_gain(p, q):
 
 def score(data, rand):
     worse_than_random = data < rand
-    if 0 if worse_than_random else info_gain(data, rand)
+    return 0 if worse_than_random else info_gain(data, rand)
 
 
 def smallest(concept_class):
@@ -46,11 +47,10 @@ class State:
     def update(self, spec, nsat):
         rand_sat = self.rand_sat_oracle(spec)
         self.next_lower_bound = min(rand_sat, self.next_lower_bound)
-        
+
         curr_score = score(nsat/self.ndemos, rand_sat)
         if curr_score >= self.best_score:
-            self.best_score = best_score
-            self.best_spec = spec
+            self.best_score, self.best_score = curr_score, spec
 
         self.update_nsat(nsat)
 
@@ -60,7 +60,7 @@ class State:
             self.lower_bound, self.next_lower_bound = self.next_lower_bound, 1
 
     def prune(self):
-        avg_sat_rate = nsat / self.ndemos
+        avg_sat_rate = self.nsat / self.ndemos
         beats_random = self.lower_bound < avg_sat_rate
         beats_best = score(avg_sat_rate, self.lower_bound) > self.best_score
         return not (beats_best and beats_random)
