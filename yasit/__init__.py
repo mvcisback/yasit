@@ -1,2 +1,2 @@
 # flake8: noqa
-from infer import infer
+from yasit import infer

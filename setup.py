@@ -12,6 +12,7 @@ setup(
     license='MIT',
     install_requires=[
         'attr',
+        'funcy'
     ],
     packages=find_packages(),
 )

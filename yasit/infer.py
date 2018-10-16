@@ -4,10 +4,14 @@ from itertools import combinations
 from math import log
 
 import attr
+import funcy as fn
+
+
+oo = float('inf')
 
 
 def _info_gain(p, q):
-    return p*(log(q) - log(q))
+    return p*(log(p) - log(q))
 
 
 def info_gain(p, q):
@@ -22,6 +26,7 @@ def info_gain(p, q):
 
 
 def score(data, rand):
+    assert data == 0 or rand > 0  # Cannot satisfy spec if rand == 0.
     worse_than_random = data < rand
     return 0 if worse_than_random else info_gain(data, rand)
 
@@ -36,46 +41,53 @@ def contain_trc(concept_class, trc):
 
 @attr.s(auto_attribs=True)
 class State:
-    rand_sat_oracle: "Oracle"
     ndemos: int
     best_spec: "Spec" = None
-    best_score: float = -float('inf')
-    lower_bound: float = 0
-    next_lower_bound: float = 0
-    nsat: int = -1
+    best_score: float = -oo
+    lower_bound: float = oo
+    next_lower_bound: float = oo
 
-    def update(self, spec, nsat):
-        rand_sat = self.rand_sat_oracle(spec)
+    def update_spec(self, spec, nsat):
+        rand_sat = spec.rand_sat()
+        assert self.lower_bound == oo or rand_sat >= self.lower_bound
         self.next_lower_bound = min(rand_sat, self.next_lower_bound)
 
         curr_score = score(nsat/self.ndemos, rand_sat)
-        if curr_score >= self.best_score:
-            self.best_score, self.best_score = curr_score, spec
+        if curr_score > self.best_score:
+            self.best_score, self.best_spec = curr_score, spec
 
-        self.update_nsat(nsat)
+    def update_lowerbound(self):
+        assert self.lower_bound == oo or \
+            self.lower_bound <= self.next_lower_bound
 
-    def update_nsat(self, nsat):
-        if nsat >= self.nsat:
-            self.nsat = nsat
-            self.lower_bound, self.next_lower_bound = self.next_lower_bound, 1
+        self.lower_bound, self.next_lower_bound = self.next_lower_bound, oo
 
-    def prune(self):
-        avg_sat_rate = self.nsat / self.ndemos
-        beats_random = self.lower_bound < avg_sat_rate
-        beats_best = score(avg_sat_rate, self.lower_bound) > self.best_score
+    def prune(self, nsat):
+        if self.best_spec is None or self.lower_bound == oo:
+            return False
+
+        avg_sat = nsat / self.ndemos
+        beats_random = self.lower_bound < avg_sat
+        beats_best = score(avg_sat, self.lower_bound) > self.best_score
         return not (beats_best and beats_random)
 
 
-def infer(demos, basis, rand_sat_oracle):
-    state = State(rand_sat_oracle, len(demos))
-    visited = {smallest(contain_trc(trc)) for trc in demos}
-    for nsat in range(len(demos)):
-        state.update_nsat(nsat)
+def _infer(demos, basis, *, pruning=True):
+    # TODO: support passing random seed.
+    state = State(len(demos))
+    visited = {trc: smallest(contain_trc(basis, trc)) for trc in demos}
+    for nsat in reversed(range(1, len(demos) + 1)):
+        # TODO: random sample.
         for trcs in combinations(demos, nsat):
-            if state.prune():
+            if pruning and state.prune(nsat):
                 break
-            trcs_basis = reduce(op.or_, (visited[trc] for trc in trcs))
+            trcs_basis = (visited[trc] for trc in trcs)
             spec = smallest(trcs_basis)
-            state.update(spec, nsat)
+            state.update_spec(spec, len(trcs))
+            yield state
 
-    return state.best_spec
+        state.update_lowerbound()
+
+
+def infer(demos, basis):
+    return fn.last(_infer(demos, basis))
