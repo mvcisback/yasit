@@ -73,7 +73,7 @@ def test_infer():
     states = list(infer._infer(TRCS, BASIS, pruning=False))
     assert len(states) == 2**len(TRCS) - 1
     assert states[-1].best_score > 0
-    # assert states[-1].best_spec((True, False, True))
+    assert states[-1].best_spec((True, False, True))
 
     states2 = list(infer._infer(TRCS, BASIS, pruning=True))
     assert states[-1].best_score == states2[-1].best_score
