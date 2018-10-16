@@ -73,11 +73,9 @@ class State:
 
 
 def _infer(demos, basis, *, pruning=True):
-    # TODO: support passing random seed.
     state = State(len(demos))
     visited = {trc: smallest(contain_trc(basis, trc)) for trc in demos}
     for nsat in reversed(range(1, len(demos) + 1)):
-        # TODO: random sample.
         for trcs in combinations(demos, nsat):
             if pruning and state.prune(nsat):
                 break
