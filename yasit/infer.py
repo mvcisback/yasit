@@ -19,4 +19,3 @@ def chain_inference(chain, demos):
     bots = find_bots(chain, demos)
     scored = ((score(psat, spec.rand_sat()), spec) for psat, spec in bots)
     return max(scored, key=lambda x: x[0])
-

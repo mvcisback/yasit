@@ -1,10 +1,8 @@
 import attr
 import hypothesis.strategies as st
 from operator import itemgetter as ig
-from itertools import product
 
 import pytest
-import funcy as fn
 from hypothesis import given
 from yasit import infer, scoring, lattice
 
@@ -93,7 +91,6 @@ def test_chain_inference():
 
     psat, spec = infer.chain_inference(CHAIN2, DEMOS)
     assert spec.name == {2, 4}
-
 
 
 LATTOP = lattice.Lattice(children=[], spec=TRUE)
