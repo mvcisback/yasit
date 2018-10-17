@@ -17,7 +17,7 @@
 of python objects, supporting the `__call__` and `__leq__` dunder
 methods. For example,
 
-```
+```python
 class TraceProperty:
     def __call__(self, demonstration) -> bool:
         '''
@@ -42,7 +42,7 @@ Then if `concept_class` is an iterable of objects conforming to
 demonstrations (inputs to `__call__`), finding the most probable
 specification is done by:
 
-```
+```python
 from yasit import infer
 
 spec, score = infer(concept_class, demonstrations)
