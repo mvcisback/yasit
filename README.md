@@ -19,10 +19,11 @@ methods. For example,
 
 ```python
 class TraceProperty:
+    def __hash__(self):
+        '''Must be hashable.'''
+
     def __call__(self, demonstration) -> bool:
-        '''
-        Evaluate if the provided demonstration satisifies this property.
-        '''
+        '''Evaluate if the provided demonstration satisifies this property.'''
 
     def __leq__(self, other) -> bool:
         '''
