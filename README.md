@@ -20,16 +20,27 @@ methods. For example,
 ```
 class TraceProperty:
     def __call__(self, demonstration) -> bool:
-        # Evaluate if demonstration satisifies this property.
+        '''
+        Evaluate if the provided demonstration satisifies this property.
+        '''
 
     def __leq__(self, other) -> bool:
-        # Evaluate if this property (self) implies (other).
-        # As sets, this corresponds to subset inclusion.
+        '''
+        Evaluate if this property (self) implies (other).
+        - As sets, this corresponds to subset inclusion.
+        '''
+
+    def rand_sat(self) -> [0, 1]:
+        '''
+        Return the probability (in interval [0, 1]) of randomly satisifying 
+        the property if one applies actions uniformly at random.
+        '''
 ```
 
-Then if `concept_class` is an iterable conforming to `TraceProperty`'s
-API, and `demonstrations` is an iterable of demonstrations (inputs to
-`__call__`), the inference function can be used.
+Then if `concept_class` is an iterable of objects conforming to
+`TraceProperty`'s API, and `demonstrations` is an iterable of
+demonstrations (inputs to `__call__`), finding the most probable
+specification is done by:
 
 ```
 from yasit import infer
