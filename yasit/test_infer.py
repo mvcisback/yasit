@@ -6,7 +6,7 @@ from itertools import product
 import pytest
 import funcy as fn
 from hypothesis import given
-from yasit import infer, scoring
+from yasit import infer, scoring, lattice
 
 
 @given(st.floats(min_value=0, max_value=1),
@@ -92,4 +92,26 @@ def test_chain_inference():
     assert spec.name == {2}
 
     psat, spec = infer.chain_inference(CHAIN2, DEMOS)
+    assert spec.name == {2, 4}
+
+
+
+LATTOP = lattice.Lattice(children=[], spec=TRUE)
+LAT0 = lattice.Lattice(children=[LATTOP], spec=PHI0)
+LAT01 = lattice.Lattice(children=[LAT0], spec=PHI0 & PHI1)
+LAT02 = lattice.Lattice(children=[LAT0], spec=PHI0 & PHI2)
+LAT012 = lattice.Lattice(children=[LAT01, LAT02], spec=PHI0 & PHI1 & PHI2)
+LATBOT = lattice.Lattice(children=[LAT012], spec=FALSE)
+
+
+def test_gen_chains():
+    chains = list(LATBOT.gen_chains())
+    assert len(chains) == 2
+    assert len(chains[0]) + len(chains[1]) == 6
+    assert [n.name for n in chains[0]] == \
+        [spec.name for spec in CHAIN2]
+
+
+def test_lattice_inference():
+    psat, spec = LATBOT.infer(DEMOS)
     assert spec.name == {2, 4}
