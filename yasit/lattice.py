@@ -1,30 +1,45 @@
+from itertools import combinations
 from typing import List
 
-import attr
+import funcy as fn
+import networkx as nx
 
-from yasit import infer
+from yasit import chain, equiv_classes
 
 
-@attr.s(auto_attribs=True, frozen=True, cmp=False)
-class Lattice:
-    children: List['Spec']
-    spec: 'Spec'
+def create_lattice(concept_class):
+    clses = equiv_classes.find_equiv_cls(concept_class)
+    g = nx.DiGraph()
+    for cls1, cls2 in combinations(clses, 2):
+        if cls1 <= cls2:
+            g.add_edge(cls1.rep, cls2.rep)
+        if cls2 <= cls1:
+            g.add_edge(cls2.rep, cls1.rep)
 
-    def gen_chains(self):
-        stack, visited = [self], set()
-        curr_chain = []
-        while stack:
-            curr = stack.pop()
-            curr_chain.append(curr.spec)
-            visited.add(curr)
-            stack += [c for c in curr.children if c not in visited]
+    return nx.transitive_reduction(g)
 
-            if set(curr.children) <= visited:
-                yield curr_chain
-                curr_chain = []
 
-    def infer(self, demos):
-        return max(
-            (infer.chain_inference(c, demos) for c in self.gen_chains()),
-            key=lambda x: x[0]
-        )
+def gen_chains(lat):
+    src = fn.first(n for n, d in lat.in_degree() if d == 0)
+    stack, visited = [src], set()
+    curr_chain = []
+    while stack:
+        curr = stack.pop()
+        curr_chain.append(curr)
+        visited.add(curr)
+        children = list(lat[curr])
+        stack += [c for c in children if c not in visited]
+
+        if set(children) <= visited:
+            yield curr_chain
+            curr_chain = []
+
+
+def infer(concept_class, demos):
+    if not isinstance(concept_class, nx.DiGraph):
+        concept_class = create_lattice(concept_class)
+    
+    return max(
+        (chain.chain_inference(c, demos) for c in gen_chains(concept_class)),
+        key=lambda x: x[0]
+    )

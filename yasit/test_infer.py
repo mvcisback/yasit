@@ -5,7 +5,7 @@ from operator import itemgetter as ig
 
 import pytest
 from hypothesis import given
-from yasit import infer, scoring, lattice
+from yasit import chain, scoring, lattice, equiv_classes
 
 
 @given(st.floats(min_value=0, max_value=1),
@@ -21,15 +21,15 @@ def test_score(p, q):
             assert score == 0
 
         if q + 1e-4 <= 1:
-            assert score >= infer.score(p, q + 1e-4)
+            assert score >= chain.score(p, q + 1e-4)
 
 
 BOOL = {True, False}
 
 def _func_to_set(f):
-    if isinstance(f, set):
+    if isinstance(f, frozenset):
         return f
-    return {x for x in product(BOOL, BOOL, BOOL) if f(x)}
+    return frozenset({x for x in product(BOOL, BOOL, BOOL) if f(x)})
 
 
 @attr.s(frozen=True)
@@ -67,17 +67,17 @@ DEMOS = [(True, True, True)] \
 
 
 def test_percent_sat():
-    assert infer.percent_sat(TRUE, DEMOS) == 1
-    assert infer.percent_sat(FALSE, DEMOS) == 0
-    assert infer.percent_sat(PHI0, DEMOS) == 11/13
-    assert infer.percent_sat(PHI1, DEMOS) == 3/13
-    assert infer.percent_sat(PHI2, DEMOS) == 11/13
-    assert infer.percent_sat(PHI0 & PHI1, DEMOS) == 1/13
-    assert infer.percent_sat(PHI0 & PHI1 & PHI2, DEMOS) == 1/13
+    assert chain.percent_sat(TRUE, DEMOS) == 1
+    assert chain.percent_sat(FALSE, DEMOS) == 0
+    assert chain.percent_sat(PHI0, DEMOS) == 11/13
+    assert chain.percent_sat(PHI1, DEMOS) == 3/13
+    assert chain.percent_sat(PHI2, DEMOS) == 11/13
+    assert chain.percent_sat(PHI0 & PHI1, DEMOS) == 1/13
+    assert chain.percent_sat(PHI0 & PHI1 & PHI2, DEMOS) == 1/13
 
 
 def test_find_bots():
-    bots = list(infer.find_bots(CHAIN1, DEMOS))
+    bots = list(chain.find_bots(CHAIN1, DEMOS))
     assert len(bots) == 4
     psat2bot = dict(bots)
     assert len(bots) == len(psat2bot)  # Unique spec per partition.
@@ -89,29 +89,47 @@ def test_find_bots():
     assert psat2bot[11/13] == PHI0
 
 
-def test_chain_inference():
-    psat, spec = infer.chain_inference(CHAIN1, DEMOS)
+def test_chain_chainence():
+    psat, spec = chain.chain_inference(CHAIN1, DEMOS)
     assert spec == PHI0
 
-    psat, spec = infer.chain_inference(CHAIN2, DEMOS)
+    psat, spec = chain.chain_inference(CHAIN2, DEMOS)
     assert spec == PHI0 & PHI2
 
 
-LATTOP = lattice.Lattice(children=[], spec=TRUE)
-LAT0 = lattice.Lattice(children=[LATTOP], spec=PHI0)
-LAT01 = lattice.Lattice(children=[LAT0], spec=PHI0 & PHI1)
-LAT02 = lattice.Lattice(children=[LAT0], spec=PHI0 & PHI2)
-LAT012 = lattice.Lattice(children=[LAT01, LAT02], spec=PHI0 & PHI1 & PHI2)
-LATBOT = lattice.Lattice(children=[LAT012], spec=FALSE)
+CC1 = [TRUE, FALSE, PHI0, PHI0 & PHI1, PHI0 & PHI2, PHI0 & PHI1 & PHI2]
+
+
+def test_find_equiv_cls():
+    eqs = equiv_classes.find_equiv_cls(CC1)
+    assert len(eqs) == 6
+
+
+    class Smallest(DumbSpec):  # Semantically the same as FALSE.
+        def __leq__(self, _):
+            return True
+
+    eqs = equiv_classes.find_equiv_cls(CC1 + [Smallest(lambda _: False, 0)])
+    assert len(eqs) == 6
+
+
+def test_create_lattice():
+    lat = lattice.create_lattice(CC1)
+    
+    assert len(lat.edges) == 6
+    assert sum(1 for _, d in lat.out_degree() if d == 0) == 1
+    assert sum(1 for _, d in lat.in_degree() if d == 0) == 1
 
 
 def test_gen_chains():
-    chains = list(LATBOT.gen_chains())
+    lat = lattice.create_lattice(CC1)
+    
+    chains = list(lattice.gen_chains(lat))
     assert len(chains) == 2
     assert len(chains[0]) + len(chains[1]) == 6
-    assert chains[0] == CHAIN2
+    assert (chains[0] == CHAIN2) or (chains[0] == CHAIN1)
 
 
 def test_lattice_inference():
-    psat, spec = LATBOT.infer(DEMOS)
+    psat, spec = lattice.infer(CC1, DEMOS)
     assert spec == PHI0 & PHI2

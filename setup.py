@@ -12,7 +12,8 @@ setup(
     license='MIT',
     install_requires=[
         'attr',
-        'funcy'
+        'funcy',
+        'networkx'
     ],
     packages=find_packages(),
 )
