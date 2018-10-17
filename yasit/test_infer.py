@@ -4,8 +4,9 @@ from operator import itemgetter as ig
 from itertools import product
 
 import pytest
+import funcy as fn
 from hypothesis import given
-from yasit import infer
+from yasit import infer, scoring
 
 
 @given(st.floats(min_value=0, max_value=1),
@@ -13,9 +14,9 @@ from yasit import infer
 def test_score(p, q):
     if q == 0 and p > 0:
         with pytest.raises(AssertionError):  # Impossible to satisfy spec.
-            infer.score(p, q)
+            scoring.score(p, q)
     else:
-        score = infer.score(p, q)
+        score = scoring.score(p, q)
         assert score >= 0
         if p < q:
             assert score == 0
@@ -25,55 +26,70 @@ def test_score(p, q):
 
 
 @attr.s(frozen=True, cmp=False)
-class IndependentSpec:
+class DumbSpec:
     func = attr.ib()
+    name = attr.ib()
     _rand_sat = attr.ib()
 
     def __call__(self, *args) -> bool:
         return self.func(*args)
 
     def __and__(self, other):
+        if any(-n in other.name for n in self.name):
+            rand_sat = 0
+        else:
+            rand_sat = self.rand_sat() * other.rand_sat()
         return attr.evolve(
             self,
             func=lambda x: self.func(x) and other.func(x),
-            rand_sat=self.rand_sat() * other.rand_sat()
+            rand_sat=rand_sat,
+            name=self.name | other.name
         )
 
     def rand_sat(self):
         return self._rand_sat
 
 
-BASIS = [
-    IndependentSpec(ig(2), 0.8),
-    IndependentSpec(lambda x: not x[2], 0.2),
-    IndependentSpec(ig(1), 0.5),
-    IndependentSpec(lambda x: not x[1], 0.5),
-    IndependentSpec(ig(0), 0.7),
-    IndependentSpec(lambda x: not x[0], 0.3),
-]
+TRUE = DumbSpec(lambda _: True, {1}, 1)
+FALSE = DumbSpec(lambda _: False, {-1}, 0)
+PHI0 = DumbSpec(ig(0), {2}, 0.7)
+PHI1 = DumbSpec(ig(1), {3}, 0.5)
+PHI2 = DumbSpec(ig(2), {4}, 0.8)
 
 
-TRCS = [(True, False, True)]*10 + [(False, True, False)]*2
+CHAIN1 = [FALSE, PHI0 & PHI1 & PHI2, PHI0 & PHI1, PHI0, TRUE]
+CHAIN2 = [FALSE, PHI0 & PHI1 & PHI2, PHI0 & PHI2, PHI0, TRUE]
+DEMOS = [(True, True, True)] \
+    + [(True, False, True)]*10 \
+    + [(False, True, False)]*2
 
 
-def test_contain_trc():
-    for trc in TRCS:
-        specs = infer.contain_trc(BASIS, trc)
-        assert all(spec(trc) for spec in specs)
+def test_percent_sat():
+    assert infer.percent_sat(TRUE, DEMOS) == 1
+    assert infer.percent_sat(FALSE, DEMOS) == 0
+    assert infer.percent_sat(PHI0, DEMOS) == 11/13
+    assert infer.percent_sat(PHI1, DEMOS) == 3/13
+    assert infer.percent_sat(PHI2, DEMOS) == 11/13
+    assert infer.percent_sat(PHI0 & PHI1, DEMOS) == 1/13
+    assert infer.percent_sat(PHI0 & PHI1 & PHI2, DEMOS) == 1/13
 
 
-def test_smallest():
-    smallest = infer.smallest(BASIS)
-    for spec, trc in product(BASIS, TRCS):
-        assert smallest.rand_sat() <= spec.rand_sat()
-        assert not smallest(trc) or spec(trc)
+def test_find_bots():
+    bots = list(infer.find_bots(CHAIN1, DEMOS))
+    assert len(bots) == 4
+    psat2bot = dict(bots)
+    assert len(bots) == len(psat2bot)  # Unique spec per partition.
+    # TODO: assert binary search equals linear scan.
+
+    assert psat2bot[0].name == {-1}
+    assert psat2bot[1].name == {1}
+    assert psat2bot[1/13].name == {2, 3, 4}
+    assert psat2bot[11/13].name == {2}
 
 
-def test_infer():
-    states = list(infer._infer(TRCS, BASIS, pruning=False))
-    assert len(states) == 2**len(TRCS) - 1
-    assert states[-1].best_score > 0
-    assert states[-1].best_spec((True, False, True))
+def test_chain_inference():
+    psat, spec = infer.chain_inference(CHAIN1, DEMOS)
+    assert spec.name == {2}
 
-    states2 = list(infer._infer(TRCS, BASIS, pruning=True))
-    assert states[-1].best_score == states2[-1].best_score
+    psat, spec = infer.chain_inference(CHAIN2, DEMOS)
+    assert spec.name == {2, 4}
