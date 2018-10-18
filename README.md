@@ -15,7 +15,7 @@ enviroment and ask what is the most likey task given the examples
 (also called the demonstrations).
 
 <figure>
-  <img src="assets/overview.png" alt="overview.png" width=300px>
+  <img src="assets/overview.png" alt="overview.png" width=800px>
 </figure>
 
 In this context, a "Boolean Specification" (also called bounded trace
@@ -27,7 +27,7 @@ and collection of candidate specifications and find the most probable
 one specification. In cartoon math, `yasit` optimizes:
 
 <figure>
-  <img src="assets/cartoon_math.png" alt="cartoon math" width=300px>
+  <img src="assets/cartoon_math.png" alt="cartoon math" width=500px>
 </figure>
 
 For details on the posteori probability model and algorithm see:
