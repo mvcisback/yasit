@@ -9,7 +9,7 @@
 (Y)et (a)nother (s)pecification (i)nference (t)ool
 
 <figure>
-  <img src="assets/cartoon_math.svg" alt="cartoon math" width=300px>
+  <img src="assets/cartoon_math.png" alt="cartoon math" width=300px>
   <figcaption>
       Cartoon math illustration the learning specifications from
       demonstrations problem.
