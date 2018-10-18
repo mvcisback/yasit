@@ -8,7 +8,7 @@
 # (Y)et (a)nother (s)pecification (i)nference (t)ool
 
 Yasit is a tool for learning "Boolean Specifications" from
-Demonstrations. In particular, we are given a set of examples from an
+demonstrations. In particular, we are given a set of examples from an
 agent (also called the teacher) who is performing some task in an
 enviroment and ask what is the most likey task given the examples
 (also called the demonstrations).
