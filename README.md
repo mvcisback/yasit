@@ -5,8 +5,7 @@
 [![PyPI version](https://badge.fury.io/py/yasit.svg)](https://badge.fury.io/py/yasit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# yasit
-(Y)et (a)nother (s)pecification (i)nference (t)ool
+# (Y)et (a)nother (s)pecification (i)nference (t)ool
 
 Yasit is a tool for learning "Boolean Specifications" from
 Demonstrations. In particular, we are given a set of examples from an
