@@ -8,9 +8,27 @@
 # yasit
 (Y)et (a)nother (s)pecification (i)nference (t)ool
 
+<figure>
+  <img src="assets/cartoon_math.svg" alt="cartoon math" width=300px>
+  <figcaption>
+      Cartoon math illustration the learning specifications from
+      demonstrations problem.
+  </figcaption>
+</figure>
+
+![Cartoon Math]()
+
 ## About
 
-## (Tentative) Usage
+Yasit is a tool for learning Boolean Specifications from
+Demonstrations.
+
+For details on the posteori probability model and algorithm see:
+[Vazquez-Chanlatte, Marcell, et al. "Learning Task Specifications from
+Demonstrations.", Advances in Neural Information Processing Systems,
+NIPS, 2018](https://arxiv.org/abs/1710.03875).
+
+## Usage
 
 `yasit`'s api centers around the `infer` function. For example, let
 `concept_class` denote an iterable container (e.g., a `Set` or `List`)
@@ -48,3 +66,11 @@ from yasit import infer
 
 spec, score = infer(concept_class, demonstrations)
 ```
+
+`infer` also supports taking in a `networkx.DiGraph`. Infact, if
+`concept_class` is not a `DiGraph`, the first thing `infer` does it
+make it one. The currently procedure to do this is fairly slow and
+makes numerous `<=` queries. If these are slow, you may wish to
+implement your own `concept_class` to `DiGraph` convertor. Note, that
+the resulting graph should be transitively reduced. This can be done
+using `networkx.transitive_reduction`.
