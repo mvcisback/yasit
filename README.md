@@ -10,13 +10,7 @@
 
 <figure>
   <img src="assets/cartoon_math.png" alt="cartoon math" width=300px>
-  <figcaption>
-      Cartoon math illustration the learning specifications from
-      demonstrations problem.
-  </figcaption>
 </figure>
-
-![Cartoon Math]()
 
 ## About
 
