@@ -8,14 +8,27 @@
 # yasit
 (Y)et (a)nother (s)pecification (i)nference (t)ool
 
+Yasit is a tool for learning "Boolean Specifications" from
+Demonstrations. In particular, we are given a set of examples from an
+agent (also called the teacher) who is performing some task in an
+enviroment and ask what is the most likey task given the examples
+(also called the demonstrations).
+
+<figure>
+  <img src="assets/overview.png" alt="overview.png" width=300px>
+</figure>
+
+In this context, a "Boolean Specification" (also called bounded trace
+properties) is a set of demonstrations, where one says a demonstration
+satisifies the specification if the demonstration lies in the
+set. Currently, we assume all demonstrations have the same length.
+The main purpose of `yasit` is to take a collection of demonstrations
+and collection of candidate specifications and find the most probable
+one specification. In cartoon math, `yasit` optimizes:
+
 <figure>
   <img src="assets/cartoon_math.png" alt="cartoon math" width=300px>
 </figure>
-
-## About
-
-Yasit is a tool for learning Boolean Specifications from
-Demonstrations.
 
 For details on the posteori probability model and algorithm see:
 [Vazquez-Chanlatte, Marcell, et al. "Learning Task Specifications from
