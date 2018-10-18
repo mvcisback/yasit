@@ -1,5 +1,4 @@
 from itertools import combinations
-from typing import List
 
 import funcy as fn
 import networkx as nx
@@ -38,7 +37,7 @@ def gen_chains(lat):
 def infer(concept_class, demos):
     if not isinstance(concept_class, nx.DiGraph):
         concept_class = create_lattice(concept_class)
-    
+
     return max(
         (chain.chain_inference(c, demos) for c in gen_chains(concept_class)),
         key=lambda x: x[0]

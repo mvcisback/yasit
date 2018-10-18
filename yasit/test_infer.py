@@ -24,9 +24,8 @@ def test_score(p, q):
             assert score >= chain.score(p, q + 1e-4)
 
 
-BOOL = {True, False}
-
 def _func_to_set(f):
+    BOOL = {True, False}
     if isinstance(f, frozenset):
         return f
     return frozenset({x for x in product(BOOL, BOOL, BOOL) if f(x)})
@@ -104,7 +103,6 @@ def test_find_equiv_cls():
     eqs = equiv_classes.find_equiv_cls(CC1)
     assert len(eqs) == 6
 
-
     class Smallest(DumbSpec):  # Semantically the same as FALSE.
         def __leq__(self, _):
             return True
@@ -115,7 +113,7 @@ def test_find_equiv_cls():
 
 def test_create_lattice():
     lat = lattice.create_lattice(CC1)
-    
+
     assert len(lat.edges) == 6
     assert sum(1 for _, d in lat.out_degree() if d == 0) == 1
     assert sum(1 for _, d in lat.in_degree() if d == 0) == 1
@@ -123,7 +121,7 @@ def test_create_lattice():
 
 def test_gen_chains():
     lat = lattice.create_lattice(CC1)
-    
+
     chains = list(lattice.gen_chains(lat))
     assert len(chains) == 2
     assert len(chains[0]) + len(chains[1]) == 6

@@ -13,7 +13,8 @@ class EquivCls:
         return attr.evolve(self, elements=self.elements | other.elements)
 
     def __leq__(self, other):
-        return any(x1 <= x2 for x1, x2 in product(self.elements, other.elements))
+        pairwise = product(self.elements, other.elements)
+        return any(x1 <= x2 for x1, x2 in pairwise)
 
 
 def find_equiv_cls(concept_class):
