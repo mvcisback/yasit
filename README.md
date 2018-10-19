@@ -28,18 +28,20 @@ avoid lava, and if you get wet visit a drying tile before recharging".
 Each demonstration is visualized using
 [github.com/mvcisback/gridworld-visualizer](github.com/mvcisback/gridworld-visualizer).
 
+<div style="display: flex;">
 <object data="assets/example1.svg" type="image/svg+xml">
   <img src="assets/example1.svg" />
 </object>
 <object data="assets/example2.svg" type="image/svg+xml">
   <img src="assets/example2.svg" />
 </object>
-<object data="assets/example2.svg" type="image/svg+xml">
-  <img src="assets/example2.svg" />
+<object data="assets/example3.svg" type="image/svg+xml">
+  <img src="assets/example3.svg" />
 </object>
-<object data="assets/example2.svg" type="image/svg+xml">
-  <img src="assets/example2.svg" />
+<object data="assets/example4.svg" type="image/svg+xml">
+  <img src="assets/example4.svg" />
 </object>
+</div>
 
 The main purpose of `yasit` is to take a collection of demonstrations
 and collection of candidate specifications and find the most probable
