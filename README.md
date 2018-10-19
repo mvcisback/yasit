@@ -37,7 +37,7 @@ avoid lava, and if you get wet visit a drying tile before recharging".
   <img src="assets/example3.svg" />
 </object>
 <object data="assets/example4.svg" type="image/svg+xml">
-  <img src="assets/example5.svg" />
+  <img src="assets/example4.svg" />
 </object>
 </div>
 
