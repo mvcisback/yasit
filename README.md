@@ -25,6 +25,8 @@ example, consider an agent operating in a gridworld with lava, water,
 drying tiles, and recharge tiles. The following are example
 demonstrations of the following specification: "eventually recharge,
 avoid lava, and if you get wet visit a drying tile before recharging".
+Each demonstration is visualized using
+[github.com/mvcisback/gridworld-visualizer](github.com/mvcisback/gridworld-visualizer).
 
 <object data="assets/example1.svg" type="image/svg+xml">
   <img src="assets/example1.svg" />
@@ -38,7 +40,6 @@ avoid lava, and if you get wet visit a drying tile before recharging".
 <object data="assets/example2.svg" type="image/svg+xml">
   <img src="assets/example2.svg" />
 </object>
-
 
 The main purpose of `yasit` is to take a collection of demonstrations
 and collection of candidate specifications and find the most probable
