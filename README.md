@@ -61,7 +61,15 @@ NIPS, 2018](https://arxiv.org/abs/1710.03875).
 `yasit`'s API centers around the `infer` function. For example, let
 `concept_class` denote an iterable container (e.g., a `Set` or `List`)
 of python objects, supporting the `__call__` and `__leq__` dunder
-methods. For example,
+methods as well as the `rand_sat` method which computes the
+probability of satisfying the property given a common starting point
+for all the demonstrations.
+    - Note: We currently only support each demonstration starting at
+     the same location. Future versions will relax this condition, but
+     will require `#unique_starting_points` queries to `rand_sat`
+     to evaluate the probability of a given property.
+
+For example,
 
 ```python
 class TraceProperty:
@@ -73,8 +81,11 @@ class TraceProperty:
 
     def __leq__(self, other) -> bool:
         '''
-        Evaluate if this property (self) implies (other).
+        - Evaluate if (self) is known to imply (other).
         - As sets, this corresponds to subset inclusion.
+        - If __leq__ is constantly False, then the algorithm
+          will compute the probability of *every* property and
+          return the maximimum.
         - Only required if giving `concept_class` as a
           flat list of specifications.
         '''
@@ -82,7 +93,8 @@ class TraceProperty:
     def rand_sat(self) -> [0, 1]:
         '''
         Return the probability (in interval [0, 1]) of randomly satisifying 
-        the property if one applies actions uniformly at random.
+        the property if one applies actions uniformly at random from the
+        starting point.
         '''
 ```
 
