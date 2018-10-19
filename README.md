@@ -26,18 +26,20 @@ drying tiles, and recharge tiles. The following are example
 demonstrations of the following specification: "eventually recharge,
 avoid lava, and if you get wet visit a drying tile before recharging".
 
+<div style="display: flex;">
 <object data="assets/example1.svg" type="image/svg+xml">
   <img src="assets/example1.svg" />
 </object>
 <object data="assets/example2.svg" type="image/svg+xml">
   <img src="assets/example2.svg" />
 </object>
-<object data="assets/example2.svg" type="image/svg+xml">
-  <img src="assets/example2.svg" />
+<object data="assets/example3.svg" type="image/svg+xml">
+  <img src="assets/example3.svg" />
 </object>
-<object data="assets/example2.svg" type="image/svg+xml">
-  <img src="assets/example2.svg" />
+<object data="assets/example4.svg" type="image/svg+xml">
+  <img src="assets/example5.svg" />
 </object>
+</div>
 
 
 The main purpose of `yasit` is to take a collection of demonstrations
