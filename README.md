@@ -75,6 +75,8 @@ class TraceProperty:
         '''
         Evaluate if this property (self) implies (other).
         - As sets, this corresponds to subset inclusion.
+        - Only required if giving `concept_class` as a
+          flat list of specifications.
         '''
 
     def rand_sat(self) -> [0, 1]:
@@ -99,6 +101,10 @@ spec, score = infer(concept_class, demonstrations)
 `concept_class` is not a `DiGraph`, the first thing `infer` does it
 make it one. The currently procedure to do this is fairly slow and
 makes numerous `<=` queries. If these are slow, you may wish to
-implement your own `concept_class` to `DiGraph` converter. Note, that
-the resulting graph should be transitively reduced. This can be done
-using `networkx.transitive_reduction`.
+implement your own `concept_class` to `DiGraph` converter. 
+
+- Note, that the resulting graph should be transitively reduced. This
+  can be done using `networkx.transitive_reduction`.
+- If `concept_class` is given as a `networkx.DiGraph`, then the
+  `TraceProperty` dunder method, `__leq__`, does *not* need to be
+  implemented.
