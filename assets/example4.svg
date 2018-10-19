@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<svg baseProfile="full" height="8.05cm" version="1.1" width="8.05cm" xmlns="http://www.w3.org/2000/svg" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <style type="text/css">
+<![CDATA[
+    .background { fill: white; }
+    .line { stroke: firebrick; stroke-width: .1mm; }
+    .lava { fill: #ff8b8b; }
+    .dry { fill: #f4a460; }
+    .water { fill: #afafff; }
+    .recharge {fill: #ffff00; }
+    .normal {fill: white; }
+    rect {
+       stroke: black;
+       stroke-width: 1;
+    }
+
+    .agent {
+      r: 10%;
+      fill: black;
+      stroke-width: 2;
+      stroke: grey;
+      animation: blinker 4s linear infinite;
+      animation: move 5s ease forwards;
+    }
+    @keyframes blinker {
+       50% {
+         opacity: 0.5;
+       }
+    }
+
+@keyframes move {
+11.11111111111111% {
+    transform: translate(1cm, 0cm);
+}
+22.22222222222222% {
+    transform: translate(2cm, 0cm);
+}
+33.33333333333333% {
+    transform: translate(2cm, -1cm);
+}
+44.44444444444444% {
+    transform: translate(2cm, -2cm);
+}
+55.55555555555556% {
+    transform: translate(2cm, -3cm);
+}
+66.66666666666666% {
+    transform: translate(2cm, -4cm);
+}
+77.77777777777779% {
+    transform: translate(3cm, -4cm);
+}
+88.88888888888889% {
+    transform: translate(4cm, -4cm);
+}
+100.0% {
+    transform: translate(5cm, -4cm);
+}
+}]]>    </style>
+  </defs>
+  <rect class="background" height="100%" width="100%" x="0" y="0"/>
+  <rect class="recharge" height="0.9cm" width="0.9cm" x="0.1cm" y="0.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="0.1cm" y="1.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="0.1cm" y="2.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="0.1cm" y="3.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="0.1cm" y="4.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="0.1cm" y="5.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="0.1cm" y="6.1cm"/>
+  <rect class="recharge" height="0.9cm" width="0.9cm" x="0.1cm" y="7.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="1.1cm" y="0.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="1.1cm" y="1.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="1.1cm" y="2.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="1.1cm" y="3.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="1.1cm" y="4.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="1.1cm" y="5.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="1.1cm" y="6.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="1.1cm" y="7.1cm"/>
+  <rect class="dry" height="0.9cm" width="0.9cm" x="2.1cm" y="0.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="2.1cm" y="1.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="2.1cm" y="2.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="2.1cm" y="3.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="2.1cm" y="4.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="2.1cm" y="5.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="2.1cm" y="6.1cm"/>
+  <rect class="dry" height="0.9cm" width="0.9cm" x="2.1cm" y="7.1cm"/>
+  <rect class="dry" height="0.9cm" width="0.9cm" x="3.1cm" y="0.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="3.1cm" y="1.1cm"/>
+  <rect class="water" height="0.9cm" width="0.9cm" x="3.1cm" y="2.1cm"/>
+  <rect class="water" height="0.9cm" width="0.9cm" x="3.1cm" y="3.1cm"/>
+  <rect class="water" height="0.9cm" width="0.9cm" x="3.1cm" y="4.1cm"/>
+  <rect class="water" height="0.9cm" width="0.9cm" x="3.1cm" y="5.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="3.1cm" y="6.1cm"/>
+  <rect class="dry" height="0.9cm" width="0.9cm" x="3.1cm" y="7.1cm"/>
+  <rect class="dry" height="0.9cm" width="0.9cm" x="4.1cm" y="0.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="4.1cm" y="1.1cm"/>
+  <rect class="water" height="0.9cm" width="0.9cm" x="4.1cm" y="2.1cm"/>
+  <rect class="water" height="0.9cm" width="0.9cm" x="4.1cm" y="3.1cm"/>
+  <rect class="water" height="0.9cm" width="0.9cm" x="4.1cm" y="4.1cm"/>
+  <rect class="water" height="0.9cm" width="0.9cm" x="4.1cm" y="5.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="4.1cm" y="6.1cm"/>
+  <rect class="dry" height="0.9cm" width="0.9cm" x="4.1cm" y="7.1cm"/>
+  <rect class="dry" height="0.9cm" width="0.9cm" x="5.1cm" y="0.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="5.1cm" y="1.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="5.1cm" y="2.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="5.1cm" y="3.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="5.1cm" y="4.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="5.1cm" y="5.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="5.1cm" y="6.1cm"/>
+  <rect class="dry" height="0.9cm" width="0.9cm" x="5.1cm" y="7.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="6.1cm" y="0.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="6.1cm" y="1.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="6.1cm" y="2.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="6.1cm" y="3.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="6.1cm" y="4.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="6.1cm" y="5.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="6.1cm" y="6.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="6.1cm" y="7.1cm"/>
+  <rect class="recharge" height="0.9cm" width="0.9cm" x="7.1cm" y="0.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="7.1cm" y="1.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="7.1cm" y="2.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="7.1cm" y="3.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="7.1cm" y="4.1cm"/>
+  <rect class="normal" height="0.9cm" width="0.9cm" x="7.1cm" y="5.1cm"/>
+  <rect class="lava" height="0.9cm" width="0.9cm" x="7.1cm" y="6.1cm"/>
+  <rect class="recharge" height="0.9cm" width="0.9cm" x="7.1cm" y="7.1cm"/>
+  <circle class="agent" cx="2.55cm" cy="4.55cm" r="0.3cm"/>
+</svg>

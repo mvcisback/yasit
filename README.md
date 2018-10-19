@@ -20,7 +20,26 @@ enviroment and ask what is the most likey task given the examples
 In this context, a "Boolean Specification" (also called bounded trace
 properties) is a set of demonstrations, where one says a demonstration
 satisifies the specification if the demonstration lies in the
-set. Currently, we assume all demonstrations have the same length.
+set. Currently, we assume all demonstrations have the same length. For
+example, consider an agent operating in a gridworld with lava, water,
+drying tiles, and recharge tiles. The following are example
+demonstrations of the following specification: "eventually recharge,
+avoid lava, and if you get wet visit a drying tile before recharging".
+
+<object data="assets/example1.svg" type="image/svg+xml">
+  <img src="assets/example1.svg" />
+</object>
+<object data="assets/example2.svg" type="image/svg+xml">
+  <img src="assets/example2.svg" />
+</object>
+<object data="assets/example2.svg" type="image/svg+xml">
+  <img src="assets/example2.svg" />
+</object>
+<object data="assets/example2.svg" type="image/svg+xml">
+  <img src="assets/example2.svg" />
+</object>
+
+
 The main purpose of `yasit` is to take a collection of demonstrations
 and collection of candidate specifications and find the most probable
 one specification. In cartoon math, `yasit` optimizes:
