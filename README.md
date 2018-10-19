@@ -10,7 +10,7 @@
 Yasit is a tool for learning "Boolean Specifications" from
 demonstrations. In particular, we are given a set of examples from an
 agent (also called the teacher) who is performing some task in an
-enviroment and ask what is the most likey task given the examples
+environment and ask what is the most likey task given the examples
 (also called the demonstrations).
 
 <figure>
@@ -58,7 +58,7 @@ NIPS, 2018](https://arxiv.org/abs/1710.03875).
 
 ## Usage
 
-`yasit`'s api centers around the `infer` function. For example, let
+`yasit`'s API centers around the `infer` function. For example, let
 `concept_class` denote an iterable container (e.g., a `Set` or `List`)
 of python objects, supporting the `__call__` and `__leq__` dunder
 methods. For example,
@@ -95,10 +95,10 @@ from yasit import infer
 spec, score = infer(concept_class, demonstrations)
 ```
 
-`infer` also supports taking in a `networkx.DiGraph`. Infact, if
+`infer` also supports taking in a `networkx.DiGraph`. In fact, if
 `concept_class` is not a `DiGraph`, the first thing `infer` does it
 make it one. The currently procedure to do this is fairly slow and
 makes numerous `<=` queries. If these are slow, you may wish to
-implement your own `concept_class` to `DiGraph` convertor. Note, that
+implement your own `concept_class` to `DiGraph` converter. Note, that
 the resulting graph should be transitively reduced. This can be done
 using `networkx.transitive_reduction`.
