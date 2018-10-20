@@ -60,7 +60,7 @@ NIPS, 2018](https://arxiv.org/abs/1710.03875).
 
 `yasit`'s API centers around the `infer` function. For example, let
 `concept_class` denote an iterable container (e.g., a `Set` or `List`)
-of python objects, supporting the `__call__` and `__leq__` dunder
+of python objects, supporting the `__call__` and `__le__` dunder
 methods as well as the `rand_sat` method which computes the
 probability of satisfying the property given a common starting point
 for all the demonstrations.
@@ -80,11 +80,11 @@ class TraceProperty:
     def __call__(self, demonstration) -> bool:
         '''Evaluate if the provided demonstration satisifies this property.'''
 
-    def __leq__(self, other) -> bool:
+    def __le__(self, other) -> bool:
         '''
         - Evaluate if (self) is known to imply (other).
         - As sets, this corresponds to subset inclusion.
-        - If __leq__ is constantly False, then the algorithm
+        - If __le__ is constantly False, then the algorithm
           will compute the probability of *every* property and
           return the maximimum.
         - Only required if giving `concept_class` as a
