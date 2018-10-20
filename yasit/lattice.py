@@ -1,6 +1,5 @@
 from itertools import combinations
 
-import funcy as fn
 import networkx as nx
 
 from yasit import chain, equiv_classes
