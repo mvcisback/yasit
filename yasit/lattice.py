@@ -19,8 +19,8 @@ def create_lattice(concept_class):
 
 
 def gen_chains(lat):
-    src = fn.first(n for n, d in lat.in_degree() if d == 0)
-    stack, visited = [src], set()
+    stack = [n for n, d in lat.in_degree() if d == 0]
+    visited = set()
     curr_chain = []
     while stack:
         curr = stack.pop()
