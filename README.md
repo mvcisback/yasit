@@ -64,10 +64,11 @@ of python objects, supporting the `__call__` and `__leq__` dunder
 methods as well as the `rand_sat` method which computes the
 probability of satisfying the property given a common starting point
 for all the demonstrations.
-    - Note: We currently only support each demonstration starting at
-     the same location. Future versions will relax this condition, but
-     will require `#unique_starting_points` queries to `rand_sat`
-     to evaluate the probability of a given property.
+
+- Note: `yasit` currently only supports each demonstration starting at
+  the same location. Future versions will relax this condition, but
+  will require `#unique_starting_points` queries to `rand_sat`
+  to evaluate the probability of a given property.
 
 For example,
 

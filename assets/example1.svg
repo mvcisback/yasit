@@ -23,6 +23,7 @@
       animation: blinker 4s linear infinite;
       animation: move 5s ease infinite;
     }
+
     @keyframes blinker {
        50% {
          opacity: 0.5;
