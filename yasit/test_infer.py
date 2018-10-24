@@ -60,9 +60,10 @@ PHI2 = DumbSpec(ig(2), 0.8)
 
 CHAIN1 = [FALSE, PHI0 & PHI1 & PHI2, PHI0 & PHI1, PHI0, TRUE]
 CHAIN2 = [FALSE, PHI0 & PHI1 & PHI2, PHI0 & PHI2, PHI0, TRUE]
-DEMOS = [(True, True, True)] \
+DEMOS =[(True, True, True)] \
     + [(True, False, True)]*10 \
     + [(False, True, False)]*2
+DEMOS = tuple(DEMOS)
 
 
 def test_percent_sat():
@@ -130,5 +131,5 @@ def test_gen_chains():
 
 
 def test_lattice_inference():
-    psat, spec = lattice.infer(CC1, DEMOS)
-    assert spec == PHI0 & PHI2
+    spec = lattice.infer(CC1, DEMOS, brute_force=True)
+    assert spec == lattice.infer(CC1, DEMOS)

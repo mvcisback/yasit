@@ -1,10 +1,12 @@
 from itertools import combinations
 
+import funcy as fn
 import networkx as nx
 
 from yasit import chain, equiv_classes
 from yasit.chain import percent_sat
 from yasit.edges import possible_edges, adj_list
+from yasit.scoring import score
 
 
 def create_lattice(concept_class, *, parallel=True):
@@ -38,11 +40,35 @@ def gen_chains(lat):
             curr_chain = []
 
 
-def infer(concept_class, demos):
+def traverse(concept_class, demos):
     if not isinstance(concept_class, nx.DiGraph):
-        concept_class = create_lattice(concept_class)
+        concept_class = create_lattice(concept_class).reverse()
 
-    return max(
-        (chain.chain_inference(c, demos) for c in gen_chains(concept_class)),
-        key=lambda x: x[0]
-    )
+    new_edges = [(None, n) for n, d in concept_class.in_degree() if d == 0]
+    concept_class.add_edges_from(new_edges)
+    traversal = nx.bfs_successors(concept_class, None)
+    next(traversal) # First element is None which is a fake specification.
+    yield from traversal
+
+
+@fn.curry
+def is_candidate(demos, node_and_parents):
+    node, parents = node_and_parents
+    psat = percent_sat(node, demos)
+    return True
+    return all(percent_sat(p, demos) != psat for p in parents)
+
+
+@fn.curry
+def score_candidate(demos, spec):
+    psat = percent_sat(spec, demos)
+    return score(psat, spec.rand_sat())
+
+
+def infer(concept_class, demos, brute_force=False):
+    candidates = traverse(concept_class, demos)
+    if not brute_force:
+        candidates = filter(is_candidate(demos), candidates)
+
+    candidates = fn.pluck(0, candidates)
+    return max(candidates, key=score_candidate(demos))
