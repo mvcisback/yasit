@@ -99,13 +99,14 @@ def test_chain_chainence():
 CC1 = [TRUE, FALSE, PHI0, PHI0 & PHI1, PHI0 & PHI2, PHI0 & PHI1 & PHI2]
 
 
+class Smallest(DumbSpec):  # Semantically the same as FALSE.
+    def __leq__(self, _):
+        return True
+
+
 def test_find_equiv_cls():
     eqs = equiv_classes.find_equiv_cls(CC1)
     assert len(eqs) == 6
-
-    class Smallest(DumbSpec):  # Semantically the same as FALSE.
-        def __leq__(self, _):
-            return True
 
     eqs = equiv_classes.find_equiv_cls(CC1 + [Smallest(lambda _: False, 0)])
     assert len(eqs) == 6

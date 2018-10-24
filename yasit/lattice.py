@@ -3,12 +3,17 @@ from itertools import combinations
 import networkx as nx
 
 from yasit import chain, equiv_classes
+from yasit.chain import percent_sat
+from yasit.edges import possible_edges, adj_list
 
 
-def create_lattice(concept_class):
-    clses = equiv_classes.find_equiv_cls(concept_class)
+def create_lattice(concept_class, *, parallel=True):
+    child_map = adj_list(concept_class)
+    clses = equiv_classes.find_equiv_cls(
+        concept_class, child_map=child_map, parallel=parallel
+    )
     g = nx.DiGraph()
-    for cls1, cls2 in combinations(clses, 2):
+    for cls1, cls2 in possible_edges(clses):
         if cls1 <= cls2:
             g.add_edge(cls1.rep, cls2.rep)
         if cls2 <= cls1:

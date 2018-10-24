@@ -1,26 +1,38 @@
-from itertools import combinations, product
+from itertools import product
 from typing import Set
 
 import attr
+import funcy as fn
+
+from yasit.edges import adj_list, possible_edges
 
 
-@attr.s(auto_attribs=True, frozen=True)
-class EquivCls:
-    rep: 'Spec'
-    elements: Set['Spec']
-
-    def __or__(self, other):
-        return attr.evolve(self, elements=self.elements | other.elements)
-
-    def __leq__(self, other):
-        pairwise = product(self.elements, other.elements)
-        return any(x1 <= x2 for x1, x2 in pairwise)
+def find_equiv_cls(concept_class, *, child_map=None, parallel=True):
+    if child_map is None:
+        child_map = adj_list(concept_class)
 
 
-def find_equiv_cls(concept_class):
-    clses = {spec: EquivCls(spec, frozenset({spec})) for spec in concept_class}
-    for spec1, spec2 in combinations(concept_class, 2):
-        if spec1 <= spec2 and spec2 <= spec1:
+    @attr.s(auto_attribs=True, frozen=True, cmp=False)
+    class EquivCls:
+        elements: Set['Spec']
+
+        def __or__(self, other):
+            return attr.evolve(self, elements=self.elements | other.elements)
+
+        def __le__(self, other):
+            pairwise = product(self.elements, other.elements)
+            return any(x2 in child_map[x1] for x1, x2 in pairwise)
+
+        @property
+        def rep(self):
+            return fn.first(self.elements)
+
+
+    clses = {spec: EquivCls(frozenset({spec})) for spec in concept_class}
+    
+    # TODO: implement this via a parallel reduction.
+    for spec1, spec2 in possible_edges(concept_class):
+        if (spec2 in child_map[spec1]) and (spec1 in child_map[spec2]):
             clses[spec1] |= clses[spec2]
             clses[spec2] = clses[spec1]
 
