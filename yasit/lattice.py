@@ -1,9 +1,7 @@
-from itertools import combinations
-
 import funcy as fn
 import networkx as nx
 
-from yasit import chain, equiv_classes
+from yasit import equiv_classes
 from yasit.chain import percent_sat
 from yasit.edges import possible_edges, adj_list
 from yasit.scoring import score

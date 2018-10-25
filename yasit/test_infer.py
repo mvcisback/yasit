@@ -60,7 +60,7 @@ PHI2 = DumbSpec(ig(2), 0.8)
 
 CHAIN1 = [FALSE, PHI0 & PHI1 & PHI2, PHI0 & PHI1, PHI0, TRUE]
 CHAIN2 = [FALSE, PHI0 & PHI1 & PHI2, PHI0 & PHI2, PHI0, TRUE]
-DEMOS =[(True, True, True)] \
+DEMOS = [(True, True, True)] \
     + [(True, False, True)]*10 \
     + [(False, True, False)]*2
 DEMOS = tuple(DEMOS)
@@ -124,5 +124,3 @@ def test_create_lattice():
 def test_lattice_inference():
     spec = lattice.infer(CC1, DEMOS).data
     assert lattice.infer(CC1, DEMOS, brute_force=True).data == spec
-
-
