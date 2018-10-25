@@ -121,15 +121,8 @@ def test_create_lattice():
     assert sum(1 for _, d in lat.in_degree() if d == 0) == 1
 
 
-def test_gen_chains():
-    lat = lattice.create_lattice(CC1)
-
-    chains = list(lattice.gen_chains(lat))
-    assert len(chains) == 2
-    assert len(chains[0]) + len(chains[1]) == 6
-    assert (chains[0] == CHAIN2) or (chains[0] == CHAIN1)
-
-
 def test_lattice_inference():
-    spec = lattice.infer(CC1, DEMOS, brute_force=True)
-    assert spec == lattice.infer(CC1, DEMOS)
+    spec = lattice.infer(CC1, DEMOS).data
+    assert lattice.infer(CC1, DEMOS, brute_force=True).data == spec
+
+

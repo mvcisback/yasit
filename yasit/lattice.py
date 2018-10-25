@@ -24,39 +24,18 @@ def create_lattice(concept_class, *, parallel=True):
     return nx.transitive_reduction(g)
 
 
-def gen_chains(lat):
-    stack = [n for n, d in lat.in_degree() if d == 0]
-    visited = set()
-    curr_chain = []
-    while stack:
-        curr = stack.pop()
-        curr_chain.append(curr)
-        visited.add(curr)
-        children = list(lat[curr])
-        stack += [c for c in children if c not in visited]
-
-        if set(children) <= visited:
-            yield curr_chain
-            curr_chain = []
-
-
 def traverse(concept_class, demos):
     if not isinstance(concept_class, nx.DiGraph):
         concept_class = create_lattice(concept_class).reverse()
 
-    new_edges = [(None, n) for n, d in concept_class.in_degree() if d == 0]
-    concept_class.add_edges_from(new_edges)
-    traversal = nx.bfs_successors(concept_class, None)
-    next(traversal) # First element is None which is a fake specification.
-    yield from traversal
+    yield from ((n, tuple(concept_class[n])) for n in concept_class)
 
 
 @fn.curry
 def is_candidate(demos, node_and_parents):
     node, parents = node_and_parents
     psat = percent_sat(node, demos)
-    return True
-    return all(percent_sat(p, demos) != psat for p in parents)
+    return any(percent_sat(p, demos) != psat for p in parents)
 
 
 @fn.curry
@@ -66,9 +45,11 @@ def score_candidate(demos, spec):
 
 
 def infer(concept_class, demos, brute_force=False):
-    candidates = traverse(concept_class, demos)
+    candidates = list(traverse(concept_class, demos))
+    assert len(candidates) == 6
     if not brute_force:
-        candidates = filter(is_candidate(demos), candidates)
+        candidates = list(filter(is_candidate(demos), candidates))
 
-    candidates = fn.pluck(0, candidates)
+    candidates = list(fn.pluck(0, candidates))
+    print([score_candidate(demos)(c) for c in candidates])
     return max(candidates, key=score_candidate(demos))
