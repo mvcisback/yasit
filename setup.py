@@ -13,7 +13,8 @@ setup(
     install_requires=[
         'attr',
         'funcy',
-        'networkx'
+        'networkx',
+        'pathos',
     ],
     packages=find_packages(),
 )
