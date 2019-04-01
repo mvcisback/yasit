@@ -2,7 +2,7 @@ attrs==19.1.0
 codecov==2.0.15
 funcy==1.11
 networkx==2.2
-pathos==0.2.2.1
+pathos==0.2.3
 pytest==4.2.0
 pytest-cov==2.6.1
 pytest-flake8==1.0.4
