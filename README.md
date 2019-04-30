@@ -17,39 +17,9 @@ environment and ask what is the most likey task given the examples
   <img src="assets/overview.png" alt="overview.png" width=800px>
 </figure>
 
-In this context, a "Boolean Specification" (also called bounded trace
-properties) is a set of demonstrations, where one says a demonstration
-satisifies the specification if the demonstration lies in the
-set. Currently, we assume all demonstrations have the same length. For
-example, consider an agent operating in a gridworld with lava, water,
-drying tiles, and recharge tiles. The following are example
-demonstrations of the following specification: "eventually recharge,
-avoid lava, and if you get wet visit a drying tile before recharging".
-Each demonstration is visualized using
-[github.com/mvcisback/gridworld-visualizer](github.com/mvcisback/gridworld-visualizer).
-
-<div style="display: flex;">
-<object data="assets/example1.svg" type="image/svg+xml">
-  <img src="assets/example1.svg" />
-</object>
-<object data="assets/example2.svg" type="image/svg+xml">
-  <img src="assets/example2.svg" />
-</object>
-<object data="assets/example3.svg" type="image/svg+xml">
-  <img src="assets/example3.svg" />
-</object>
-<object data="assets/example4.svg" type="image/svg+xml">
-  <img src="assets/example4.svg" />
-</object>
-</div>
-
 The main purpose of `yasit` is to take a collection of demonstrations
 and collection of candidate specifications and find the most probable
-one specification. In cartoon math, `yasit` optimizes:
-
-<figure>
-  <img src="assets/cartoon_math.png" alt="cartoon math" width=500px>
-</figure>
+one specification. 
 
 For details on the posteori probability model and algorithm see:
 [Vazquez-Chanlatte, Marcell, et al. "Learning Task Specifications from
