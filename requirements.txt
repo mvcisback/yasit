@@ -1,4 +1,4 @@
-attrs==19.1.0
+attrs==19.2.0
 codecov==2.0.15
 funcy==1.12
 networkx==2.3
