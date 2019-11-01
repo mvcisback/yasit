@@ -1,7 +1,7 @@
 attrs==19.3.0
 codecov==2.0.15
 funcy==1.13
-networkx==2.3
+networkx==2.4
 pathos==0.2.3
 pytest==4.5.0
 pytest-cov==2.7.1
