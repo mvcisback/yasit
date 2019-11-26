@@ -124,3 +124,4 @@ def test_create_lattice():
 def test_lattice_inference():
     spec = lattice.infer(CC1, DEMOS).data
     assert lattice.infer(CC1, DEMOS, brute_force=True).data == spec
+    assert spec == (PHI0 & PHI2).data
